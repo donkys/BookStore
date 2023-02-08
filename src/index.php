@@ -17,7 +17,7 @@
     <link rel="icon" href="../favicon.ico" />
     <link href="../dist/output.css" rel="stylesheet">
 
-    <title>หย้าหลัก - Book Store.</title>
+    <title>หน้าหลัก - Book Store.</title>
 </head>
 
 <body class="bg-gray-100">
