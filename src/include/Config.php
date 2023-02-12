@@ -1,10 +1,6 @@
 <?php
 date_default_timezone_set("Asia/Bangkok");
 
-$options = [
-    'cost' => 10,
-];
-
 $month = array(
     "", 
     "มกราคม", 
@@ -20,3 +16,5 @@ $month = array(
     "พฤศจิกายน",
     "ธันวาคม"
 );
+
+?>
