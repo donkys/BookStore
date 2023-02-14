@@ -370,6 +370,108 @@ function getOrderByEmp($EmployeeID)
     return $result;
 }
 
+function getOrderByEmpToday($EmployeeID)
+{
+    $mysqli = connect();
+    $today = date('Y-m-d 00:00:00');
+    $today2 = date('Y-m-d 23:59:59');
+
+    if ($_SESSION["emp_admin"] == 1) {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price 
+        FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND Order_date BETWEEN ? AND ? ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "ss",
+            $today,
+            $today2
+        );
+    } else {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND orders.EmployeeID = ? AND Order_date BETWEEN ? AND ? ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "sss",
+            $EmployeeID,
+            $today,
+            $today2
+        );
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($stmt->affected_rows < 1) {
+        alert("ไม่พบข้อมูล");
+    }
+
+    return $result;
+}
+
+function getOrderByEmpWithDate($EmployeeID, $day)
+{
+    $mysqli = connect();
+
+    if ($_SESSION["emp_admin"] == 1) {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price 
+        FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND Order_date > DATE_ADD(NOW(), INTERVAL -? DAY) ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "s",
+            $day
+        );
+    } else {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND orders.EmployeeID = ? AND Order_date > DATE_ADD(NOW(), INTERVAL -? DAY) ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "ss",
+            $EmployeeID,
+            $day
+        );
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($stmt->affected_rows < 1) {
+        alert("ไม่พบข้อมูล");
+    }
+
+    return $result;
+}
+
+function getOrderByEmpWithDateToDate($EmployeeID, $date1, $date2)
+{
+    $mysqli = connect();
+
+    if ($_SESSION["emp_admin"] == 1) {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price 
+        FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND Order_date BETWEEN ? AND ? ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "ss",
+            $date1,
+            $date2
+        );
+    } else {
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND orders.EmployeeID = ? AND Order_date BETWEEN ? AND ? ORDER BY Order_id DESC;");
+        $stmt->bind_param(
+            "sss",
+            $EmployeeID,
+            $date1,
+            $date2
+        );
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($stmt->affected_rows < 1) {
+        alert("ไม่พบข้อมูล");
+    }
+
+    return $result;
+}
+
 function getCountDetail($Order_id)
 {
     $mysqli = connect();
@@ -388,4 +490,3 @@ function getCountDetail($Order_id)
 
     return $result->fetch_assoc();
 }
-
