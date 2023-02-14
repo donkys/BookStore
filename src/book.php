@@ -16,16 +16,15 @@
 <body class="bg-gray-600">
     <!-- Navbar -->
     <?php
+
+    if ($_SESSION["emp_admin"] == 1) {
+        header("location: ./bookOrder.php");
+    }
+
     $_GET["all"] = 1;
     include("./include/nav.php");
 
-
-    if (isset($_SESSION["EmployeeID"])) {
-        if (isset($_GET["buy"])) {
-            if (!empty($_GET["buy"]))
-                insertBook($_GET["buy"]);
-        }
-    } else {
+    if (!isset($_SESSION["EmployeeID"])) {
         header("location: ./login.php");
     }
     ?>
@@ -38,7 +37,7 @@
 
         <div style="width:30%; margin:auto;" class="text-white rounded-full">
             <div style="padding:20px; width:100%;" class="text-gray-1000 text-center text-4xl font-bold">
-                <i class="fa-solid fa-bag-shopping"></i> <u>  ซื้อหนังสือ</u>
+                <i class="fa-solid fa-bag-shopping"></i> <u> ซื้อหนังสือ</u>
             </div>
 
         </div>
@@ -49,7 +48,7 @@
                     <tr align=center>
                         <th style="width:280px" scope="col" class="px-6 py-3"><i class="fa-solid fa-book"></i> หนังสือ</th>
                         <th style="width:700px" scope="col" class="px-6 py-3"><i class="fa-solid fa-circle-info"></i> รายละเอียด</th>
-                        <th style="width:350px" scope="col" class="px-6 py-3"><i class="fa-solid fa-bag-shopping"></i> สั่งซื้อ</th>
+                        <th style="width:280px" scope="col" class="px-6 py-3"><i class="fa-solid fa-bag-shopping"></i> สั่งซื้อ</th>
                     </tr>
                 </thead>
 
@@ -72,9 +71,7 @@
                                     <td class='px-4 py-1'>
                                         <div class='text-white p-4 text-xl font-black'>
                                             <!-- Book Name -->
-                                            
                                                 " . $row["Product_name"] . "
-                                            
                                         </div>
                                         <div style='height:95px; padding: 0px 10px 0px;' class='text-white text-xl'>
                                             <!-- Book Detail -->

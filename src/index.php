@@ -61,7 +61,7 @@
                                     </a>
                                     <a href="./bookOrder.php" class="mt-4">
                                         <button class="bg-green-400 hover:bg-green-500 text-white shadow-lg text-2xl font-bold py-3 px-6 mt-5 rounded-full">
-                                        <i class="fa-solid fa-inbox"></i> รายละเอียดสต็อก
+                                        <i class="fa-solid fa-inbox"></i> รายละเอียดการซื้อ
                                         </button>
                                     </a>
                                     
@@ -89,7 +89,6 @@
             </div>
         </div>
     </div>
-    <!-- <div style="padding:20px"></div> -->
     <div class="min-h-screen bg-gray-600 mt-9 mb-9 pt-10 p-14">
         <div style="width:30%; margin:auto;" class="text-white rounded-full">
             <div style="padding:20px; width:100%;" class="text-gray-1000 text-center text-4xl font-bold">
@@ -110,14 +109,11 @@
                             <div class='text-white p-4 text-center font-black'>
                                 <!-- Book Name -->
                                 " . $row["Product_name"] . "
-                        
                             </div>
                             
                             <div style='height:95px; padding: 0px 10px 0px;' class='text-white'>
                                 <!-- Book Detail -->
-                                
                                 " . $detail . "
-
                             </div>
 
                             <!-- Book Auther -->
@@ -138,18 +134,15 @@
                                     </button>
                                 </a>
                             </div>
-
                         </div>
                     </div>
                 </div> 
-                    ";
+            ";
             }
             ?>
-
         </div>
-
     </div>
-
+    </div>
     <!-- footer -->
     <?php
     include("./include/foot.php")

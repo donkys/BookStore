@@ -9,10 +9,15 @@
             <a href="./">
                 <li class="hover:text-black text-xl py-4 px-6"> หน้าหลัก </li>
             </a>
-
-            <a href="./book.php">
-                <li class="hover:text-black text-xl py-4 px-6"> หนังสือทั้งหมด </li>
-            </a>
+            <?php if (isset($_SESSION["emp_admin"]) && $_SESSION["emp_admin"] == 1) : ?>
+                <a href="./addStock.php">
+                    <li class="hover:text-black text-xl py-4 px-6"> แก้ไขสต็อก </li>
+                </a>
+            <?php else : ?>
+                <a href="./book.php">
+                    <li class="hover:text-black text-xl py-4 px-6"> หนังสือทั้งหมด </li>
+                </a>
+            <?php endif; ?>
 
             <a href="./bookOrder.php">
                 <li class="hover:text-black text-xl py-4 px-6"> รายละเอียดการซื้อ </li>
@@ -30,29 +35,16 @@
                                 <i class="fa-solid fa-right-from-bracket"> </i> ออกจากระบบ 
                             </button>
                         </a>';
-                if (isset($_GET["all"])) {
-                    if ($_GET["all"] == 1) {
-                        echo "
+                if (isset($_GET["all"]) && $_GET["all"] == 1) {
+                    echo "
                     
-                            <form action='./book.php' method='get' id='BUYBOOK'>
+                            <form action='./bougth.php' method='get' id='BUYBOOK'>
                             <a>
                                 <button type='submit' id='BUYBOOK' style='margin-left: 10px; cursor:pointer;' class='bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-6 rounded-full'>
                                     <i class='fa-solid fa-bag-shopping'></i>  ซื้อหนังสือ
                                 </button>
                             </a>    
-                                ";
-                    } 
-                    // else if ($_GET["all"] == 2) {
-                    //     echo "
-                    
-                    //     <form action='./addStock.php' method='get' id='addBOOK'>
-                    //     <a>
-                    //         <button type='submit' id='addBOOK' style='margin-left: 10px; cursor:pointer;' class='bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-6 rounded-full'>
-                    //             <i class='fa-solid fa-boxes-stacked'></i> แก้จำนวน
-                    //         </button>
-                    //     </a>    
-                    //         ";
-                    // }
+                    ";
                 }
             } else echo '                
                 <a href="./login.php">

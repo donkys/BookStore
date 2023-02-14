@@ -43,19 +43,25 @@
             <table align="center" class="text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr align="center">
-                        <th width="100px" scope="col" class="px-6 py-3">
-                            Order_id
+                        <th width="150px" scope="col" class="px-6 py-3 text-xl">
+                            Order id
                         </th>
-                        <th width="100px" scope="col" class="px-6 py-3">
-                            EmployeeID
+                        <th width="150px" scope="col" class="px-6 py-3 text-xl">
+                            รหัสผู้ซื้อ
                         </th>
-                        <th width="200px" scope="col" class="px-6 py-3">
-                            Order_date
+                        <th width="200px" scope="col" class="px-6 py-3 text-xl">
+                            ชื่อผู้ซื้อ
                         </th>
-                        <th width="100px" scope="col" class="px-6 py-3">
-                            Order_Price
+                        <th width="200px" scope="col" class="px-6 py-3 text-xl">
+                            วันที่ซื้อ
                         </th>
-                        <th width="400px" scope="col" class="px-6 py-3">
+                        <th width="300px" scope="col" class="px-6 py-3 text-xl">
+                            ราคารวม
+                        </th>
+                        <th width="200px" scope="col" class="px-6 py-3 text-xl">
+                            จำนวนรายการ
+                        </th>
+                        <th width="300px" scope="col" class="px-6 py-3 text-xl">
                             Overview
                         </th>
                     </tr>
@@ -63,21 +69,37 @@
                 <tbody>
 
                     <?php
+                    $orderQty = 0;
+                    $allPrice = 0;
+                    $allItem = 0;
+
                     $result = getOrderByEmp($_SESSION["EmployeeID"]);
                     while ($row = $result->fetch_assoc()) {
+                        $itemCount = getCountDetail($row["Order_id"])["C"];
+                        $orderQty++;
+                        $allPrice += $row["Order_Price"];
+                        $allItem += $itemCount;
                         echo "
                             <tr align='center' class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                                <th scope='row' class='px-6 py-4 text-xl font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                                     " . $row["Order_id"] . "
                                 </th>
-                                <td class='px-6 py-4'>
+                                <td class='px-6 py-4 text-xl'>
                                     " . $row["EmployeeID"] . "
                                 </td>
-                                <td class='px-6 py-4'>
+                                <td class='px-6 py-4 text-xl'>
+                                    " . $row["emp_name"] . "
+                                </td>
+                                <td class='px-6 py-4 text-xl'>
                                     " . $row["Order_date"] . "
                                 </td>
-                                <td class='px-6 py-4'>
+                                <td class='px-6 py-4 text-xl'>
                                     " . $row["Order_Price"] . "
+                                </td>
+                                <td class='px-6 py-4 text-xl'>
+                                    " .
+                            $itemCount
+                            . " 
                                 </td>
                                 <td class='px-6 py-4'>
                                     <form action='./bookOrderDetail.php' method='get'>
@@ -96,6 +118,28 @@
 
 
                 </tbody>
+                <tfoot>
+                    <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+                        <th align=center class='px-6 py-4 text-xl'>
+
+                        </th>
+                        <th align=center class='px-6 py-4 text-xl'>
+
+                        </th>
+                        <th align=center colspan="2" scope='row' class='px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white text-2xl '>
+                            รวม <?php echo $orderQty; ?> การสั่งซื้อ
+                        </th>
+                        <th align=center class='px-6 py-4 text-2xl font-bold'>
+                            <?php echo  $allPrice ?> บาท
+                        </th>
+                        <th align=center class='px-6 py-4 text-2xl font-bold'>
+                            <?php echo  $allItem; ?> รายการ
+                        </th>
+                        <th align=center class='px-6 py-4 text-xl'>
+
+                        </th>
+                    </tr>
+                </tfoot>
             </table>
 
         </div>

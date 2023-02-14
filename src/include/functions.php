@@ -149,6 +149,7 @@ function editInfo(
     if (!isset($_SESSION["EmployeeID"])) {
         header("location: ./login.php");
     }
+    $d = date("Y-m-d");
     $mysqli = connect();
     $sql = "UPDATE employees SET emp_name= ?, emp_lname= ?, emp_sex= ?, emp_BOD= ?, emp_addr= ?, emp_tel= ?, emp_email= ?, emp_update= ? WHERE EmployeeID = ?";
     $stmt = $mysqli->prepare($sql);
@@ -161,7 +162,7 @@ function editInfo(
         $emp_addr,
         $emp_tel,
         $emp_email,
-        date("Y-m-d"),
+        $d,
         $_SESSION["EmployeeID"]
     );
     $stmt->execute();
@@ -221,8 +222,11 @@ function getStock()
 function getOrder()
 {
     $mysqli = connect();
-    $sql = "SELECT * FROM Orders ORDER BY Order_id DESC";
-    $stmt = $mysqli->prepare($sql);
+    $stmt = $mysqli->prepare("SELECT * FROM Orders WHERE EmployeeID = ? ORDER BY Order_id DESC");
+    $stmt->bind_param(
+        "s",
+        $_SESSION["EmployeeID"]
+    );
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
@@ -281,18 +285,16 @@ function insertBook($bought)
             $mysqli->query($sqlUpdateStocks);
 
             $Ord_Price = ($value["price"] * $value["amount"]);
-            $d = date('Y-m-d');
 
-            $stmt = $mysqli->prepare("INSERT INTO orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty, Ord_update) VALUES (?, ?, ?, ?, ?, ?, ?);");
+            $stmt = $mysqli->prepare("INSERT INTO orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty) VALUES (?, ?, ?, ?, ?, ?);");
             $stmt->bind_param(
-                "sssssss",
+                "ssssss",
                 $row["Order_id"],
                 $key,
                 $value["name"],
                 $Ord_Price,
                 $value["price"],
                 $value["amount"],
-                $d
             );
             $stmt->execute();
             if ($stmt->affected_rows != 1) {
@@ -346,9 +348,12 @@ function getOrderByEmp($EmployeeID)
     $mysqli = connect();
 
     if ($_SESSION["emp_admin"] == 1) {
-        $stmt = $mysqli->prepare("SELECT * FROM Orders;");
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price 
+        FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID ORDER BY Order_id DESC;");
     } else {
-        $stmt = $mysqli->prepare("SELECT * FROM Orders WHERE EmployeeID = ?;");
+        $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price FROM orders, employees 
+        WHERE orders.EmployeeID = employees.EmployeeID AND orders.EmployeeID = ? ORDER BY Order_id DESC;");
         $stmt->bind_param(
             "s",
             $EmployeeID
@@ -359,8 +364,28 @@ function getOrderByEmp($EmployeeID)
     $result = $stmt->get_result();
 
     if ($stmt->affected_rows < 1) {
-        alert("An error occured. Please try again");
+        alert("ไม่พบข้อมูล");
     }
 
     return $result;
 }
+
+function getCountDetail($Order_id)
+{
+    $mysqli = connect();
+    $stmt = $mysqli->prepare("SELECT COUNT(orders_detail.Orid) AS C FROM `orders_detail` WHERE order_id = ?;");
+    $stmt->bind_param(
+        "s",
+        $Order_id
+    );
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($stmt->affected_rows < 1) {
+        alert("ไม่พบข้อมูล");
+    }
+
+    return $result->fetch_assoc();
+}
+

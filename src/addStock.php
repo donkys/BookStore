@@ -57,7 +57,7 @@
                     <tr align=center>
                         <th style="width:280px" scope="col" class="px-6 py-3"><i class="fa-solid fa-book"></i> หนังสือ</th>
                         <th style="width:700px" scope="col" class="px-6 py-3"><i class="fa-solid fa-circle-info"></i> รายละเอียด</th>
-                        <th style="width:350px" scope="col" class="px-6 py-3"><i class="fa-solid fa-boxes-stacked"></i> แก้ไขจำนวน</th>
+                        <th style="width:280px" scope="col" class="px-6 py-3"><i class="fa-solid fa-boxes-stacked"></i> แก้ไขจำนวน</th>
                     </tr>
                 </thead>
 

@@ -25,7 +25,7 @@ CREATE TABLE Stocks (
 CREATE TABLE Orders (
    Order_id int NOT NULL AUTO_INCREMENT,
    EmployeeID int NOT NULL,
-   Order_date Date,
+   Order_date DATETIME,
    Order_Price float,
    PRIMARY KEY(Order_id),
    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
@@ -44,3 +44,74 @@ CREATE TABLE Orders (
    FOREIGN KEY (Product_id) REFERENCES Stocks(Product_id),
    PRIMARY KEY(Orid, Order_id)
 );
+
+
+-- FIX
+
+CREATE TABLE Orders_detail (
+   Orid int NOT NULL,
+   Order_id int NOT NULL,
+   Product_id int NOT NULL,
+   Product_name VARCHAR(100),
+   Ord_pperunit float,
+   Ord_qty int,
+   Ord_price float,
+   PRIMARY KEY (Order_id, Orid),
+   FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
+   FOREIGN KEY (Product_id) REFERENCES Stocks(Product_id)
+);
+
+DELIMITER $$
+CREATE TRIGGER tr_ai_Orders_detail
+BEFORE INSERT ON Orders_detail
+FOR EACH ROW
+BEGIN
+  SET @last_id = (SELECT COALESCE(MAX(Orid),0) FROM Orders_detail);
+  SET NEW.Orid = @last_id + 1;
+END$$
+DELIMITER ;
+
+
+-- fix2
+CREATE TABLE Orders_detail (
+  Orid int NOT NULL,
+  Order_id int NOT NULL,
+  Product_id int NOT NULL,
+  Product_name VARCHAR(100),
+  Ord_pperunit float,
+  Ord_qty int,
+  Ord_price float,
+  PRIMARY KEY(Order_id, Orid),
+  FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
+  FOREIGN KEY (Product_id) REFERENCES Stocks(Product_id)
+);
+
+DELIMITER $$
+CREATE TRIGGER tr_ai_Orders_detail
+BEFORE INSERT ON Orders_detail
+FOR EACH ROW
+BEGIN
+  SET @last_id = (SELECT COALESCE(MAX(Orid),0) FROM Orders_detail WHERE Order_id = NEW.Order_id);
+  SET NEW.Orid = @last_id + 1;
+END$$
+DELIMITER ;
+
+
+2023-02-13 19:29:15
+
+SELECT * FROM orders WHERE Order_date >= CURDATE();
+SELECT * FROM orders WHERE Order_date >= '2023-02-13 19:29:15' AND Order_date <= '2023-02-13 22:55:5';
+SELECT * FROM orders WHERE Order_date >= '2023-02-13' AND Order_date <= '2023-02-13';
+2023-02-13 22:55:5
+
+SELECT *
+FROM orders
+WHERE Order_date BETWEEN '2023-02-13' AND '2023-02-14';
+
+SELECT *
+FROM orders
+WHERE Order_date > DATE_ADD(NOW(), INTERVAL -30 DAY);
+
+SELECT DATE_ADD(NOW(), INTERVAL -30 DAY);
+
+SELECT DATE_ADD('2023-02-13', INTERVAL -3 DAY);

@@ -22,7 +22,8 @@
     if (!isset($_SESSION["EmployeeID"])) {
         header("location: ./login.php");
     }
-
+    $Order_id = $_GET["Order_id"];
+    $EmployeeID = $_GET["EmployeeID"];
     ?>
 
     <!-- Content -->
@@ -32,7 +33,7 @@
         <form action="./book.php" method="get">
             <div style="width:30%; margin:auto;" class="text-white rounded-full">
                 <div style="padding:20px; width:100%;" class="text-gray-1000 text-center text-4xl font-bold">
-                    <u> รายละเอียดการซื้อ</u>
+                    <u> รายละเอียดการซื้อ: <?php echo $Order_id; ?> </u>
                 </div>
 
             </div>
@@ -43,66 +44,56 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Orid
+                            <th scope="col" align="center" class="px-6 py-3 text-xl">
+                                รายการ
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Order_id
+                            <th scope="col" align="center" class="px-6 py-3 text-xl">
+                                รหัสหนังสือ
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Product_id
+                            <th scope="col" class="px-6 py-3 text-xl">
+                                ชื่อหนังสือ
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Product_name
+                            <th align=center scope="col" class="px-6 py-3 text-xl">
+                                ราคาต่อหน่วย
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ord_Price
+                            <th align=center scope="col" class="px-6 py-3 text-xl">
+                                จำนวน
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ord_pperunit
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ord_qty
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Ord_update
+                            <th align=center scope="col" class="px-6 py-3 text-xl">
+                                ราคารวม
                             </th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php
-                        $Order_id = $_GET["Order_id"];
-                        $EmployeeID = $_GET["EmployeeID"];
-
-
+                        $allPrice = 0;
+                        $allAmount = 0;
+                        $allList = 0;
                         $result = getOrderDetail($Order_id, $EmployeeID);
                         while ($row = $result->fetch_assoc()) {
+                            $allPrice += $row["Ord_price"];
+                            $allAmount += $row["Ord_qty"];
+                            $allList++;
                             echo "
                             <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
-                                <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                                <th align=center scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-xl'>
                                     " . $row["Orid"] . "
                                 </th>
-                                <td class='px-6 py-4'>
-                                    " . $row["Order_id"] . "
-                                </td>
-                                <td class='px-6 py-4'>
+                                <td align=center class='px-6 py-4 text-xl'>
                                     " . $row["Product_id"] . "
                                 </td>
-                                <td class='px-6 py-4'>
+                                <td class='px-6 py-4 text-xl'>
                                     " . $row["Product_name"] . "
                                 </td>
-                                <td class='px-6 py-4'>
-                                    " . $row["Ord_Price"] . "
-                                </td>
-                                <td class='px-6 py-4'>
+                                <td align=center class='px-6 py-4 text-xl'>
                                     " . $row["Ord_pperunit"] . "
                                 </td>
-                                <td class='px-6 py-4'>
+                                <td align=center class='px-6 py-4 text-xl'>
                                     " . $row["Ord_qty"] . "
                                 </td>
-                                <td class='px-6 py-4'>
-                                    " . $row["Ord_update"] . "
+                                <td align=center class='px-6 py-4 text-xl'>
+                                    " . $row["Ord_price"] . "
                                 </td>
                             </tr>
                 
@@ -110,6 +101,22 @@
                         }
                         ?>
                     </tbody>
+                    <tfoot>
+                        <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+                            <th align=center class='px-6 py-4 text-xl'>
+
+                            </th>
+                            <th align=center colspan="3" scope='row' class='px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white text-2xl '>
+                                รวม <?php echo $allList; ?> รายการ
+                            </th>
+                            <th align=center class='px-6 py-4 text-2xl font-bold'>
+                                <?php echo $allAmount ?> เล่ม
+                            </th>
+                            <th align=center class='px-6 py-4 text-2xl font-bold'>
+                                <?php echo $allPrice; ?> บาท
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
 
 
@@ -117,7 +124,7 @@
 
 
         </form>
-        <div style="margin-top: 20px; text-align: center;" >
+        <div style="margin-top: 20px; text-align: center;">
             <button onclick="history.back()" class="bg-cyan-500 hover:bg-cyan-600 text-white text-xl font-bold py-3 px-6 rounded-full">
                 <i class="fa-sharp fa-solid fa-circle-chevron-left"></i> กลับหน้ารายละเอียดการซื้อ
             </button>
