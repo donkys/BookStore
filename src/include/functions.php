@@ -232,6 +232,24 @@ function getOrder()
     return $result;
 }
 
+function floatTwo($num)
+{
+    return number_format((float)$num, 2, '.', '');
+}
+
+function getOrderEmpBYID($Order_id)
+{
+    $mysqli = connect();
+    $stmt = $mysqli->prepare("SELECT Orders.EmployeeID, Order_id, Order_date, Order_Price, emp_name, emp_lname, emp_addr, emp_tel, emp_email FROM Orders, employees WHERE Order_id = ? AND Orders.EmployeeID = employees.EmployeeID ORDER BY Order_id DESC");
+    $stmt->bind_param(
+        "s",
+        $Order_id
+    );
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+}
+
 function alert($msg)
 {
     echo "<script type='text/javascript'>alert('$msg');</script>";

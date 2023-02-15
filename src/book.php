@@ -17,16 +17,18 @@
     <!-- Navbar -->
     <?php
 
-    if ($_SESSION["emp_admin"] == 1) {
+    if (!isset($_SESSION["EmployeeID"])) {
+        header("location: ./login.php");
+    }
+
+    if (isset($_SESSION["emp_admin"]) &&  $_SESSION["emp_admin"] == 1) {
         header("location: ./bookOrder.php");
     }
 
     $_GET["all"] = 1;
     include("./include/nav.php");
 
-    if (!isset($_SESSION["EmployeeID"])) {
-        header("location: ./login.php");
-    }
+
     ?>
 
     <!-- Content -->

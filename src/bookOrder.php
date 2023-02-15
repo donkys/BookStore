@@ -33,9 +33,6 @@
         $result = getOrderByEmp($_SESSION["EmployeeID"]);
     }
 
-
-
-
     ?>
 
     <!-- Content -->
@@ -71,7 +68,7 @@
                                                     </svg>
                                                 </div>
 
-                                                <input datepicker type="datetime-local" name="date1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" max="<?php echo date('Y-m-d H:i:s'); ?>" value="<?php echo date('Y-m-d H:i:s', strtotime(' -1 day')); ?>">
+                                                <input datepicker type="datetime-local" name="date1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" max="<?php echo date('Y-m-d H:i:s'); ?>" value="<?php echo date('Y-m-d 00:00:00', strtotime(' -1 day')); ?>">
                                             </div>
 
                                         </td>
@@ -96,7 +93,7 @@
                                     </form>
                                     <td style="padding-left:20px">
                                         <a href="./bookOrder.php?today=1">
-                                            <button class='bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-6 rounded-full'>
+                                            <button class='bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-8 rounded-full'>
                                                 <i class="fa-solid fa-calendar-day"></i> วันนี้
                                             </button>
                                         </a>

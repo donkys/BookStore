@@ -128,7 +128,7 @@
             <button onclick="history.back()" class="bg-cyan-500 hover:bg-cyan-600 text-white text-xl font-bold py-3 px-6 rounded-full">
                 <i class="fa-sharp fa-solid fa-circle-chevron-left"></i> กลับหน้ารายละเอียดการซื้อ
             </button>
-            <button style="margin-left: 10px;" onclick="location.href = './report.php?Order_id=<?php echo $Order_id; ?>&$EmployeeID=<?php echo $EmployeeID; ?>';" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xl font-bold py-3 px-6 rounded-full">
+            <button style="margin-left: 10px;" onclick="location.href = './report.php?Order_id=<?php echo $Order_id; ?>&EmployeeID=<?php echo $EmployeeID; ?>';" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xl font-bold py-3 px-6 rounded-full">
                 <i class="fa-solid fa-print"> </i> ปริ้นใบสั่งซื้อ
             </button>
         </div>
