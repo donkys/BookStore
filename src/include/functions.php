@@ -182,7 +182,7 @@ function addProduct($Product_img, $Product_name, $Product_qty, $PricePerUnit, $P
         header("location: ./index.php");
     }
     $mysqli = connect();
-    $stmt = $mysqli->prepare("INSERT INTO Stocks(Product_img, Product_name, Product_qty, PricePerUnit, Product_author, Product_publisher, Product_des) VALUE(?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $mysqli->prepare("INSERT INTO stocks(Product_img, Product_name, Product_qty, PricePerUnit, Product_author, Product_publisher, Product_des) VALUE(?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param(
         "sssssss",
         $Product_img,
@@ -212,7 +212,7 @@ function limit($value, $limit = 110, $end = '...')
 function getStock()
 {
     $mysqli = connect();
-    $sql = "SELECT * FROM Stocks";
+    $sql = "SELECT * FROM stocks";
     $stmt = $mysqli->prepare($sql);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -222,7 +222,7 @@ function getStock()
 function getOrder()
 {
     $mysqli = connect();
-    $stmt = $mysqli->prepare("SELECT * FROM Orders WHERE EmployeeID = ? ORDER BY Order_id DESC");
+    $stmt = $mysqli->prepare("SELECT * FROM orders WHERE EmployeeID = ? ORDER BY Order_id DESC");
     $stmt->bind_param(
         "s",
         $_SESSION["EmployeeID"]
@@ -240,7 +240,7 @@ function floatTwo($num)
 function getOrderEmpBYID($Order_id)
 {
     $mysqli = connect();
-    $stmt = $mysqli->prepare("SELECT Orders.EmployeeID, Order_id, Order_date, Order_Price, emp_name, emp_lname, emp_addr, emp_tel, emp_email FROM Orders, employees WHERE Order_id = ? AND Orders.EmployeeID = employees.EmployeeID ORDER BY Order_id DESC");
+    $stmt = $mysqli->prepare("SELECT orders.EmployeeID, Order_id, Order_date, Order_Price, emp_name, emp_lname, emp_addr, emp_tel, emp_email FROM orders, employees WHERE Order_id = ? AND orders.EmployeeID = employees.EmployeeID ORDER BY Order_id DESC");
     $stmt->bind_param(
         "s",
         $Order_id
@@ -299,13 +299,13 @@ function insertBook($bought)
     $row = getOrder()->fetch_assoc();
     foreach ($bought as $key => $value) {
         if ($value["amount"] != 0) {
-            $sqlUpdateStocks = "UPDATE Stocks SET Product_qty = Product_qty - " . $value["amount"] . " WHERE Product_id = " . $key . ";";
+            $sqlUpdateStocks = "UPDATE stocks SET Product_qty = Product_qty - " . $value["amount"] . " WHERE Product_id = " . $key . ";";
             $mysqli->query($sqlUpdateStocks);
 
             $Ord_Price = ($value["price"] * $value["amount"]);
 
-            $stmt = $mysqli->prepare("INSERT INTO orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty) VALUES (?, ?, ?, ?, ?, ?);");
-            $stmt->bind_param(
+            $stmt2 = $mysqli->prepare("INSERT INTO bookstoredb.orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty) VALUES (?, ?, ?, ?, ?, ?);");
+            $stmt2->bind_param(
                 "ssssss",
                 $row["Order_id"],
                 $key,
@@ -314,8 +314,8 @@ function insertBook($bought)
                 $value["price"],
                 $value["amount"],
             );
-            $stmt->execute();
-            if ($stmt->affected_rows != 1) {
+            $stmt2->execute();
+            if ($stmt2->affected_rows != 1) {
                 return "An error occured 2. Please try again";
             }
         }
@@ -347,7 +347,7 @@ function getOrderDetail($Order_id, $EmployeeID)
 {
     if ($EmployeeID == $_SESSION["EmployeeID"] || $_SESSION["emp_admin"] == 1) {
         $mysqli = connect();
-        $stmt = $mysqli->prepare("SELECT * FROM Orders_detail WHERE Order_id = ?;");
+        $stmt = $mysqli->prepare("SELECT * FROM orders_detail WHERE Order_id = ?;");
         $stmt->bind_param(
             "s",
             $Order_id
@@ -368,7 +368,7 @@ function getOrderByEmp($EmployeeID)
     if ($_SESSION["emp_admin"] == 1) {
         $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price 
         FROM orders, employees 
-        WHERE orders.EmployeeID = employees.EmployeeID ORDER BY Order_id DESC;");
+        WHERE orders.EmployeeID = employees.EmployeeID ORDER BY order_id DESC;");
     } else {
         $stmt = $mysqli->prepare("SELECT Order_id, orders.EmployeeID, emp_name, Order_date, Order_Price FROM orders, employees 
         WHERE orders.EmployeeID = employees.EmployeeID AND orders.EmployeeID = ? ORDER BY Order_id DESC;");
@@ -493,7 +493,7 @@ function getOrderByEmpWithDateToDate($EmployeeID, $date1, $date2)
 function getCountDetail($Order_id)
 {
     $mysqli = connect();
-    $stmt = $mysqli->prepare("SELECT COUNT(orders_detail.Orid) AS C FROM `orders_detail` WHERE order_id = ?;");
+    $stmt = $mysqli->prepare("SELECT COUNT(orders_detail.Orid) AS C FROM orders_detail WHERE order_id = ?;");
     $stmt->bind_param(
         "s",
         $Order_id
