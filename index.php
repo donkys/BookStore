@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>This is new index</h1>
+    <h1>KUY RAI is new index</h1>
 </body>
 </html>
