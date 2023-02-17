@@ -299,12 +299,20 @@ function insertBook($bought)
     $row = getOrder()->fetch_assoc();
     foreach ($bought as $key => $value) {
         if ($value["amount"] != 0) {
-            $sqlUpdateStocks = "UPDATE stocks SET Product_qty = Product_qty - " . $value["amount"] . " WHERE Product_id = " . $key . ";";
-            $mysqli->query($sqlUpdateStocks);
+            // $sqlUpdateStocks = "UPDATE stocks SET Product_qty = Product_qty - " . $value["amount"] . " WHERE Product_id = " . $key . ";";
+            // $mysqli->query($sqlUpdateStocks);
+
+            $stmt = $mysqli->prepare("UPDATE stocks SET Product_qty = Product_qty - ? WHERE Product_id = ?;");
+            $stmt->bind_param(
+                "ss",
+                $value["amount"],
+                $key
+            );
+            $stmt->execute();
 
             $Ord_Price = ($value["price"] * $value["amount"]);
 
-            $stmt2 = $mysqli->prepare("INSERT INTO bookstoredb.orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty) VALUES (?, ?, ?, ?, ?, ?);");
+            $stmt2 = $mysqli->prepare("INSERT INTO orders_detail(Order_id, Product_id, Product_name, Ord_Price, Ord_pperunit, Ord_qty) VALUES (?, ?, ?, ?, ?, ?);");
             $stmt2->bind_param(
                 "ssssss",
                 $row["Order_id"],
@@ -312,7 +320,7 @@ function insertBook($bought)
                 $value["name"],
                 $Ord_Price,
                 $value["price"],
-                $value["amount"],
+                $value["amount"]
             );
             $stmt2->execute();
             if ($stmt2->affected_rows != 1) {

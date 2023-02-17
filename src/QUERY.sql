@@ -1,4 +1,4 @@
-CREATE TABLE Employees (
+CREATE TABLE employees (
    EmployeeID int NOT NULL AUTO_INCREMENT,
    emp_name VARCHAR(100) NOT NULL,
    emp_lname VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE Employees (
    PRIMARY KEY (EmployeeID)
 );
 
-CREATE TABLE Stocks (
+CREATE TABLE stocks (
    Product_id int NOT NULL AUTO_INCREMENT,
    Product_img VARCHAR(255),
    Product_name VARCHAR(100) NOT NULL,
@@ -26,13 +26,13 @@ CREATE TABLE Stocks (
    PRIMARY KEY (Product_id)
 );
 
-CREATE TABLE Orders (
+CREATE TABLE orders (
    Order_id int NOT NULL AUTO_INCREMENT,
    EmployeeID int NOT NULL,
    Order_date DATETIME NOT NULL,
    Order_Price float NOT NULL,
    PRIMARY KEY(Order_id),
-   FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+   FOREIGN KEY (EmployeeID) REFERENCES employees(EmployeeID)
 );
 
 --  CREATE TABLE Orders_detail (
@@ -71,7 +71,7 @@ CREATE TABLE Orders (
 -- END$$
 -- DELIMITER ;
 -- fix2
-CREATE TABLE Orders_detail (
+CREATE TABLE orders_detail (
    Orid int NOT NULL,
    Order_id int NOT NULL,
    Product_id int NOT NULL,
@@ -80,17 +80,18 @@ CREATE TABLE Orders_detail (
    Ord_qty int,
    Ord_price float,
    PRIMARY KEY(Order_id, Orid),
-   FOREIGN KEY (Order_id) REFERENCES Orders(Order_id),
-   FOREIGN KEY (Product_id) REFERENCES Stocks(Product_id)
+   FOREIGN KEY (Order_id) REFERENCES orders(Order_id),
+   FOREIGN KEY (Product_id) REFERENCES stocks(Product_id)
 );
-DELIMITER $$ CREATE TRIGGER tr_ai_Orders_detail BEFORE
-INSERT ON Orders_detail FOR EACH ROW BEGIN
+
+DELIMITER $$ CREATE TRIGGER tr_ai_orders_detail BEFORE
+INSERT ON orders_detail FOR EACH ROW BEGIN
 SET @last_id = (
-      SELECT COALESCE(MAX(Orid), 0)
-      FROM Orders_detail
-      WHERE Order_id = NEW.Order_id
+      SELECT COALESCE(MAX(orid), 0)
+      FROM orders_detail
+      WHERE order_id = NEW.order_id
    );
-SET NEW.Orid = @last_id + 1;
+SET NEW.orid = @last_id + 1;
 END $$ DELIMITER;
 -- 2023-02-13 19:29:15
 -- SELECT * FROM orders WHERE Order_date >= CURDATE();
@@ -105,3 +106,13 @@ END $$ DELIMITER;
 -- WHERE Order_date > DATE_ADD(NOW(), INTERVAL -30 DAY);
 -- SELECT DATE_ADD(NOW(), INTERVAL -30 DAY);
 -- SELECT DATE_ADD('2023-02-13', INTERVAL -3 DAY);
+
+DELIMITER $$
+CREATE TRIGGER tr_ai_orders_detail
+BEFORE INSERT ON orders_detail
+FOR EACH ROW
+BEGIN
+  SET @last_id = (SELECT COALESCE(MAX(Orid),0) FROM orders_detail WHERE Order_id = NEW.Order_id);
+  SET NEW.Orid = @last_id + 1;
+END$$
+DELIMITER ;

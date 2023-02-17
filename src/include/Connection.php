@@ -2,7 +2,7 @@
 define('SERVER','68.183.185.180');
 define('USERNAME','Porapipat');
 define('PASSOWRD','Porapipat159753654');
-define('DATABASE','bookstoredb');
+define('DATABASE','bookstore_db');
 
 // define('SERVER','db-fullstackweb-do-user-13569510-0.b.db.ondigitalocean.com:25060');
 // define('USERNAME','doadmin');

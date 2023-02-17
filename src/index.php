@@ -89,6 +89,7 @@
             </div>
         </div>
     </div>
+    
     <div class="min-h-screen bg-gray-600 mt-9 mb-9 pt-10 p-14">
         <div style="width:30%; margin:auto;" class="text-white rounded-full">
             <div style="padding:20px; width:100%;" class="text-gray-1000 text-center text-4xl font-bold">
