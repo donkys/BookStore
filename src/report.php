@@ -178,7 +178,7 @@
                         <div style="font-size: 18px;"> ผู้พิมพ์: <?php echo $info["emp_name"] . " " . $info["emp_lname"]; ?></div>
                         <b>เบอร์โทร: </b><?php echo $info["emp_tel"]; ?><br>
                         <b>อีเมล: </b><?php echo $info["emp_email"]; ?><br>
-                        <b>วันที่ </b><?php echo $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
+                        <b>วันที่ </b><?php echo $datetime->format('Y-m-d') . " -- " .$date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
                         <b>เวลา </b><?php echo $time; ?> น.<br>
                     </div>
                 </td>
