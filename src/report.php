@@ -182,7 +182,7 @@
 
                     ?>
                     <div>
-                        <div style="font-size: 18px;"> ผู้พิมพ์นะฮัฟ: <?php echo $info["emp_name"] . " " . $info["emp_lname"]; ?></div>
+                        <div style="font-size: 18px;"> ผู้พิมพ์: <?php echo $info["emp_name"] . " " . $info["emp_lname"]; ?></div>
                         <b>เบอร์โทร: </b><?php echo $info["emp_tel"]; ?><br>
                         <b>อีเมล: </b><?php echo $info["emp_email"]; ?><br>
                         <b>วันที่ </b><?php print(($date[2]) . ' ' . ($month[(int)$date[1]]) . ' พ.ศ.' . ($date[0] + 543)); ?> <br>
