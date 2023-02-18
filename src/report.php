@@ -36,15 +36,18 @@
         $row = $result->fetch_assoc();
 
         $datebuy = $row["Order_date"];
+        $d = explode(" ", $datebuy);
+        $db = date("Y-m-d", strtotime(str_replace('-', '/', $d[0])));
 
-        $time = explode(" ", $datebuy);
-        $date = explode("-", $time[0]); 
+
+        $time = $d[1];
+        $date = explode("-", $db); 
 
         ?>
         <div style="padding-left: 70%;">
             <b style="font-size: 18px;">วันที่ซื้อหนังสือ</b><br>
             <b>วันที่ </b><?php echo $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
-            <b>เวลา </b><?php echo $time[1]; ?> น.<br>
+            <b>เวลา </b><?php echo $time; ?> น.<br>
         </div>
         <div>
             <table>
@@ -167,9 +170,12 @@
                     $info = getInfo();
 
                     $datebuy = date("Y-m-d H:i:s");
-
-                    $time = explode(" ", $datebuy);
-                    $date = explode("-", $time[0]); 
+                    $d = explode(" ", $datebuy);
+                    $db = date("Y-m-d", strtotime(str_replace('-', '/', $d[0])));
+            
+            
+                    $time = $d[1];
+                    $date = explode("-", $db); 
 
 
                     ?>
@@ -178,7 +184,7 @@
                         <b>เบอร์โทร: </b><?php echo $info["emp_tel"]; ?><br>
                         <b>อีเมล: </b><?php echo $info["emp_email"]; ?><br>
                         <b>วันที่ </b><?php echo  $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
-                        <b>เวลา </b><?php echo $time[1]; ?> น.<br>
+                        <b>เวลา </b><?php echo $time; ?> น.<br>
                     </div>
                 </td>
             </tr>
