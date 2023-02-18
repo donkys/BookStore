@@ -43,10 +43,12 @@
         $time = $d[1];
         $date = explode("-", $db);
 
+        
+
         ?>
         <div style="padding-left: 70%;">
             <b style="font-size: 18px;">วันที่ซื้อหนังสือ</b><br>
-            <b>วันที่ </b><?php echo $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
+            <b>วันที่ </b><?php print(($date[2]) . ' ' . ($month[(int)$date[1]]) . ' พ.ศ.' . ($date[0] + 543)); ?> <br>
             <b>เวลา </b><?php echo $time; ?> น.<br>
         </div>
         <div>
