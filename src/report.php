@@ -36,18 +36,15 @@
         $row = $result->fetch_assoc();
 
         $datebuy = $row["Order_date"];
-        $datetime = new \DateTime($datebuy);
 
-        $date = explode("-", $datetime->format('Y-m-d'));
-        $time = $datetime->format('H:i:s');
-
-        // $time = explode(":", $datetime->format('H:i:s'));
+        $time = explode(" ", $datebuy);
+        $date = explode("-", $time[0]); 
 
         ?>
         <div style="padding-left: 70%;">
             <b style="font-size: 18px;">วันที่ซื้อหนังสือ</b><br>
             <b>วันที่ </b><?php echo $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
-            <b>เวลา </b><?php echo $time; ?> น.<br>
+            <b>เวลา </b><?php echo $time[1]; ?> น.<br>
         </div>
         <div>
             <table>
@@ -169,17 +166,19 @@
                     <?php
                     $info = getInfo();
 
-                    $datetime = new DateTime(date("Y-m-d H:i:s"));
-                    $date = explode("-", $datetime->format('Y-m-d'));
-                    $time = $datetime->format('H:i:s');
+                    $datebuy = date("Y-m-d H:i:s");
+
+                    $time = explode(" ", $datebuy);
+                    $date = explode("-", $time[0]); 
+
 
                     ?>
                     <div>
                         <div style="font-size: 18px;"> ผู้พิมพ์: <?php echo $info["emp_name"] . " " . $info["emp_lname"]; ?></div>
                         <b>เบอร์โทร: </b><?php echo $info["emp_tel"]; ?><br>
                         <b>อีเมล: </b><?php echo $info["emp_email"]; ?><br>
-                        <b>วันที่ </b><?php echo $datetime->format('Y-m-d')  . " -- " . $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
-                        <b>เวลา </b><?php echo $time; ?> น.<br>
+                        <b>วันที่ </b><?php echo  $date[2] . " " . $month[(int)$date[1]] . " พ.ศ." . $date[0] + 543; ?> <br>
+                        <b>เวลา </b><?php echo $time[1]; ?> น.<br>
                     </div>
                 </td>
             </tr>
