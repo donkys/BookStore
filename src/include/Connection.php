@@ -1,12 +1,15 @@
 <?php
-define('SERVER','68.183.185.180');
-define('USERNAME','Porapipat');
-define('PASSOWRD','Porapipat159753654');
-define('DATABASE','bookstore_db');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+define('SERVER', getenv('DB_HOST'));
+define('USERNAME', getenv('DB_USER'));
+define('PASSWORD', getenv('DB_PASSWORD'));
+define('DATABASE', getenv('DB_NAME'));
 
 function connect()
 {
-    $mysqli = new mysqli(SERVER, USERNAME, PASSOWRD, DATABASE);
+    $mysqli = new mysqli(SERVER, USERNAME, PASSWORD, DATABASE);
     if ($mysqli->connect_errno != 0) {
         $error = $mysqli->connect_error;
         $error_date = date("F j, Y, g:i a");
@@ -16,8 +19,5 @@ function connect()
     } else {
         return $mysqli;
     }
-
 }
-
 ?>
-
